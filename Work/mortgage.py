@@ -7,17 +7,22 @@ def mortgage_calculator(principal, rate, payment, extra_payment_start_month, ext
     total_paid = 0.0
 
     while principal > 0:
-        if months >= extra_payment_start_month and months <= extra_payment_end_month:
-            principal = principal * (1+rate/12) - (payment + extra_payment)
-            total_paid = total_paid + payment + extra_payment
-            months += 1
-        else:
-            principal = principal * (1+rate/12) - payment
-            total_paid = total_paid + payment
-            months += 1
+        principal = principal * (1+rate/12) - payment
+        total_paid = total_paid + payment
+        months += 1
 
-    print('Total paid', total_paid)
-    print('Total months', months)
+        if months >= extra_payment_start_month and months <  extra_payment_end_month:
+            principal = principal - extra_payment
+            total_paid = total_paid + extra_payment
+
+        if principal < 0:
+            total_paid = total_paid + principal
+            principal = principal - principal
+
+        print(months, round(total_paid,2), round(principal,2))
+
+    print(f'Total paid: ${total_paid:0.2f}')
+    print(f'Total months: {months}')
 
 extra_payment_start_month = 60
 extra_payment_end_month = 108
